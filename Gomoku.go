@@ -38,9 +38,9 @@ func drawBoard() {
 
 func getInput() (int, int) {
 	var x, y int
-	fmt.Print("行番号を入力してください: ")
+	fmt.Print("Enter the line number : ")
 	fmt.Scan(&x)
-	fmt.Print("列番号を入力してください: ")
+	fmt.Print("Enter the column number : ")
 	fmt.Scan(&y)
 	return x - 1, y - 1
 }
@@ -56,26 +56,26 @@ func isValidMove(x, y int) bool {
 }
 
 func isGameOver() bool {
-	// 縦列で勝利条件を満たしているかどうか
+	// Whether the win condition is met in the vertical column
 	for i := 0; i < SIZE; i++ {
 		if board[0][i] != EMPTY && board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[2][i] == board[3][i] && board[3][i] == board[4][i] {
 			return true
 		}
 	}
-	// 横列で勝利条件を満たしているかどうか
+	// Whether the win condition is satisfied in the horizontal column or not
 	for i := 0; i < SIZE; i++ {
 		if board[i][0] != EMPTY && board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][2] == board[i][3] && board[i][3] == board[i][4] {
 			return true
 		}
 	}
-	// 斜めで勝利条件を満たしているかどうか
+	// Whether the winning condition is satisfied diagonally or not
 	if board[0][0] != EMPTY && board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[2][2] == board[3][3] && board[3][3] == board[4][4] {
 		return true
 	}
 	if board[0][4] != EMPTY && board[0][4] == board[1][3] && board[1][3] == board[2][2] && board[2][2] == board[3][1] && board[3][1] == board[4][0] {
 		return true
 	}
-	// 全てのマスが埋まっている場合、引き分けとみなす
+	// If all squares are filled, the game is considered a tie
 	for i := 0; i < SIZE; i++ {
 		for j := 0; j < SIZE; j++ {
 			if board[i][j] == EMPTY {
@@ -93,14 +93,14 @@ func playerMove() {
 		if isValidMove(x, y) {
 			break
 		}
-		fmt.Println("無効なマスです。")
+		fmt.Println("Invalid square.")
 	}
 	board[x][y] = PLAYER
 }
 
 func cpuMove() {
 
-	// 空いているマスの候補を探す
+	// Finding candidates for empty squares
 	candidates := make([][2]int, 0, SIZE*SIZE)
 	for i := 0; i < SIZE; i++ {
 		for j := 0; j < SIZE; j++ {
@@ -110,7 +110,7 @@ func cpuMove() {
 		}
 	}
 
-	// 隣り合うマスに置く
+	// Place in adjacent squares
 	for _, p := range candidates {
 		for i := -1; i <= 1; i++ {
 			for j := -1; j <= 1; j++ {
@@ -129,7 +129,7 @@ func cpuMove() {
 		}
 	}
 
-	// CPU側が勝利する手がある場合は、その手を選択する
+	// If the CPU side has a winning move, select that move
 	for i := 0; i < SIZE; i++ {
 		for j := 0; j < SIZE; j++ {
 			if board[i][j] == EMPTY {
@@ -142,7 +142,7 @@ func cpuMove() {
 		}
 	}
 
-	// 相手側が勝利する手をブロックする
+	// Block the opposing side's winning move
 	for i := 0; i < SIZE; i++ {
 		for j := 0; j < SIZE; j++ {
 			if board[i][j] == EMPTY {
@@ -156,13 +156,13 @@ func cpuMove() {
 		}
 	}
 
-	// 真ん中が空いている場合は、真ん中を選ぶ
+	// If the middle is available, choose the middle.
 	if board[SIZE/2][SIZE/2] == EMPTY {
 		board[SIZE/2][SIZE/2] = CPU
 		return
 	}
 
-	// ランダムに空いているマスを選択する
+	// Randomly select an empty square
 	for {
 		x := randInt(0, SIZE-1)
 		y := randInt(0, SIZE-1)
@@ -172,7 +172,7 @@ func cpuMove() {
 		}
 	}
 
-	// 0.5秒待機する
+	// Randomly select an empty square
 	time.Sleep(500 * time.Millisecond)
 }
 
@@ -184,20 +184,20 @@ func main() {
 	initBoard()
 	drawBoard()
 	for {
-		fmt.Println("あなたのターンです。")
+		fmt.Println("It is your turn.")
 		playerMove()
 		drawBoard()
 		if isGameOver() {
-			fmt.Println("あなたの勝ちです！")
+			fmt.Println("You win!")
 			os.Exit(0)
 		}
-		fmt.Println("相手のターンです。")
-		// CPUの手を表示する前に0.5秒待機する
+		fmt.Println("It is your opponent's turn.")
+		// Wait 0.5 seconds before displaying the CPU's move
 		time.Sleep(500 * time.Millisecond)
 		cpuMove()
 		drawBoard()
 		if isGameOver() {
-			fmt.Println("相手の勝ちです！")
+			fmt.Println("Your opponent wins!")
 			os.Exit(0)
 		}
 	}
