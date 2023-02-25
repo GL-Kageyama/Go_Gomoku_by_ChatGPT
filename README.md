@@ -7,3 +7,6 @@ First, I had them create the basics of a five-way game, and the algorithm modifi
 
 ## Test Play
 ![スクリーンショット 2023-02-25 20 38 11](https://user-images.githubusercontent.com/36861752/221354852-139812ef-d886-4f47-8ea6-38c009a81c81.png)
+
+## ChatGPT
+https://openai.com/blog/chatgpt/
